@@ -1,4 +1,4 @@
-import azure from 'svelte-adapter-azure-swa';
+import adapter from '@sveltejs/adapter-static';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -7,13 +7,15 @@ const config = {
 		// these options are set automatically — see below
 		pages: 'build',
 		assets: 'build',
-		fallback: undefined,
+		fallback: null,
 		precompress: false,
 		strict: true
 	}),
-	paths: {
-		relative: false
+	prerender: {
+		// This can be false if you're using a fallback (i.e. SPA mode)
+		default: true
 	}
+
 };
 
 export default config;

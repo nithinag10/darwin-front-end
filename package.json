@@ -21,6 +21,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@sveltejs/adapter-static": "^3.0.4",
 		"svelte-inview": "^4.0.2"
 	}
 }
