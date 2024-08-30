@@ -119,8 +119,8 @@
             {/each}
         </div>
         <div class="cta">
-            <a href="#" class="btn"
-                >Ready to optimize your product? Get started now</a
+            <button class="btn"
+                >Ready to optimize your product? Get started now</button
             >
         </div>
     </div>

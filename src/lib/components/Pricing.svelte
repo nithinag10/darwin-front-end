@@ -30,7 +30,7 @@
                         <li>{feature}</li>
                     {/each}
                 </ul>
-                <a href="#" class="btn">Choose Plan</a>
+                <button class="btn">Choose Plan</button>
             </div>
         {/each}
     </div>

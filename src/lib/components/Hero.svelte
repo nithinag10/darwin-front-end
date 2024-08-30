@@ -4,7 +4,7 @@
             Is Your Product <span class="highlight">Blind</span> to User Needs?
         </h1>
         <p>Uncover Hidden Insights with AI-Agent User Simulation</p>
-        <a href="#" class="btn">Reveal User Perspectives</a>
+        <a href="/get-started" class="btn">Reveal User Perspectives</a>
     </div>
 </section>
 
