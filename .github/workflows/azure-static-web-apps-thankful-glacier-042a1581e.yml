@@ -34,7 +34,7 @@ jobs:
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
           app_location: "/" # Verify this is correct
           api_location: "" # Remove if you don't have an API
-          output_location: "build/static" # Change this line
+          output_location: "build" # Change this line
           ###### End of Repository/Build Configurations ######
 
   close_pull_request_job:
