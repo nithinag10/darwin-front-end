@@ -1,10 +1,13 @@
-import azure from 'svelte-adapter-azure-swa';
+import adapter from '@sveltejs/adapter-static';
 
-/** @type {import('@sveltejs/kit').Config} */
-const config = {
-	adapter: azure({
-		// Empty options object for default settings
-	})
+export default {
+	kit: {
+		adapter: adapter({
+			pages: 'build',
+			assets: 'build',
+			fallback: 'index.html',
+			precompress: false,
+			strict: false
+		})
+	}
 };
-
-export default config;
