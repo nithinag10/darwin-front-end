@@ -11,8 +11,8 @@
         <nav>
             <a href="#features">Features</a>
             <a href="#how-it-works">How It Works</a>
-            <a href="#pricing">Pricing</a>
-            <a href="#faq">FAQ</a>
+            <!-- <a href="#pricing">Pricing</a>
+            <a href="#faq">FAQ</a> -->
         </nav>
     </div>
 </header>

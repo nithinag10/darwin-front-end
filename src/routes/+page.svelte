@@ -11,6 +11,7 @@
     import FAQ from "$lib/components/FAQ.svelte";
     import CTA from "$lib/components/CTA.svelte";
     import Footer from "$lib/components/Footer.svelte";
+    import Popup from "$lib/components/Popup.svelte";
 </script>
 
 <Header />
@@ -25,6 +26,7 @@
     <CTA /> -->
 </main>
 <Footer />
+<Popup />
 
 <style>
     :global(html) {

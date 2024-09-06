@@ -1,10 +1,16 @@
+<script>
+    import { openPopup } from "$lib/stores/popupStore";
+</script>
+
 <section class="hero">
     <div class="container">
         <h1>
             Is Your Product <span class="highlight">Blind</span> to User Needs?
         </h1>
         <p>Uncover Hidden Insights with AI-Agent User Simulation</p>
-        <a href="/get-started" class="btn">Reveal User Perspectives</a>
+        <button class="btn hero-btn" on:click={openPopup}>
+            Reveal User Perspectives
+        </button>
     </div>
 </section>
 
@@ -59,27 +65,17 @@
         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
     }
 
-    .btn {
-        background-color: #ffd100;
-        color: #1a2a57;
-        padding: 1rem 2.5rem;
+    .hero-btn {
         font-size: 1.2rem;
-        font-weight: 600;
-        text-decoration: none;
-        border-radius: 50px;
+        padding: 1rem 2rem;
+        border: none;
+        cursor: pointer;
         transition: all 0.3s ease;
-        display: inline-block;
-        box-shadow:
-            0 4px 15px rgba(0, 0, 0, 0.2),
-            0 0 20px rgba(255, 209, 0, 0.4);
     }
 
-    .btn:hover {
-        background-color: #ffe666;
-        transform: translateY(-2px) scale(1.05);
-        box-shadow:
-            0 6px 20px rgba(0, 0, 0, 0.25),
-            0 0 30px rgba(255, 209, 0, 0.6);
+    .hero-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(255, 209, 0, 0.4);
     }
 
     @media (max-width: 768px) {
@@ -89,6 +85,11 @@
 
         p {
             font-size: 1.2rem;
+        }
+
+        .hero-btn {
+            font-size: 1rem;
+            padding: 0.8rem 1.6rem;
         }
     }
 </style>
