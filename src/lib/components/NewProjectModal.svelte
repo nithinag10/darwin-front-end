@@ -26,7 +26,7 @@
     }
 </script>
 
-{#if $modalStore.showModal}
+{#if $modalStore.showModal && $modalStore.modalType === "newProject"}
     <div
         class="modal-overlay"
         on:click={closeModal}

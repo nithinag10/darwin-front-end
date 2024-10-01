@@ -16,7 +16,7 @@
     });
 
     function openNewProjectModal() {
-        showModal();
+        showModal("newProject"); // Specify modal type
     }
 </script>
 

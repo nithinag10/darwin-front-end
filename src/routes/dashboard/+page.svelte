@@ -1,8 +1,7 @@
 <script>
-    import ProjectList from "$lib/components/ProjectList.svelte";
-    import NewProjectModal from "$lib/components/NewProjectModal.svelte";
-    import MetricCard from "$lib/components/MetricCard.svelte";
+    import AnalysisWizard from "$lib/components/AnalysisWizard.svelte";
     import { showModal } from "$lib/stores/modalStore";
+    import MetricCard from "$lib/components/MetricCard.svelte";
     import { projectsStore, loadProjects } from "$lib/stores/projectsStore";
     import { onMount } from "svelte";
 
@@ -16,13 +15,9 @@
         return () => unsubscribe();
     });
 
-    function openNewProjectModal() {
-        showModal("newProject");
-    }
-
-    // Function to handle 'Start New Analysis' button click
     function startNewAnalysis() {
-        showModal("onboarding");
+        console.log("Start Analysis clicked");
+        showModal("analysisWizard");
     }
 </script>
 
@@ -73,8 +68,7 @@
         <a href="#" class="btn btn-view">Generate Report</a>
     </section>
 
-    <!-- Include Modals -->
-    <NewProjectModal />
+    <AnalysisWizard />
 </main>
 
 <style>
@@ -154,6 +148,10 @@
         display: flex;
         flex-direction: column;
         gap: 1rem;
+        background-color: #fff;
+        border-radius: 30px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
     }
 
     .quick-actions h2 {
