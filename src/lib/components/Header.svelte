@@ -1,16 +1,18 @@
 <script>
     import logoCartoon from "$lib/images/logocartoon.png";
+    import { goto } from "$app/navigation";
 </script>
 
 <header>
     <div class="container">
-        <div class="logo">
+        <div class="logo" on:click={() => goto("/")}>
             <img src={logoCartoon} alt="Logo" class="logo-image" />
             <span class="logo-text">LemonSoda<span class="ai">.ai</span></span>
         </div>
         <nav>
             <a href="#features">Features</a>
             <a href="#how-it-works">How It Works</a>
+            <a href="/dashboard">Dashboard</a>
             <!-- <a href="#pricing">Pricing</a>
             <a href="#faq">FAQ</a> -->
         </nav>
@@ -42,6 +44,7 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
+        cursor: pointer; /* Indicates clickable logo */
     }
 
     .logo-image {

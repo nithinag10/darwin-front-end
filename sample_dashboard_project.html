@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onboard Your Product</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 100px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .coming-soon {
+            background-color: #f1f1f1;
+            padding: 10px;
+            font-size: 14px;
+            color: #888;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Onboard Your Product</h1>
+        <form>
+            <div>
+                <label for="figma-file-key">Figma File Key:</label>
+                <input type="text" id="figma-file-key" name="figma-file-key">
+            </div>
+            <div>
+                <label for="figma-access-token">Figma Access Token:</label>
+                <input type="text" id="figma-access-token" name="figma-access-token">
+            </div>
+            <div class="coming-soon">
+                Coming Soon: Adobe XD and other design tool integrations
+            </div>
+
+            <div>
+                <label for="product-landing-page-url">Product Landing Page URL:</label>
+                <input type="text" id="product-landing-page-url" name="product-landing-page-url">
+            </div>
+            <div>
+                <label for="custom-product-information">Custom Product Information:</label>
+                <textarea id="custom-product-information" name="custom-product-information" rows="4"></textarea>
+            </div>
+            <div>
+                <button type="submit">Next: Select User Agent</button>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

@@ -1,5 +1,5 @@
 <script>
-    import { openPopup } from "$lib/stores/popupStore";
+    import { goto } from "$app/navigation";
 </script>
 
 <section class="hero">
@@ -8,7 +8,7 @@
             Is Your Product <span class="highlight">Blind</span> to User Needs?
         </h1>
         <p>Uncover Hidden Insights with AI-Agent User Simulation</p>
-        <button class="btn hero-btn" on:click={openPopup}>
+        <button class="btn hero-btn" on:click={() => goto("/projects")}>
             Reveal User Perspectives
         </button>
     </div>
