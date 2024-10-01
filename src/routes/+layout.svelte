@@ -2,8 +2,6 @@
     import Header from "../lib/components/Header.svelte";
     import Footer from "$lib/components/Footer.svelte";
     import NewProjectModal from "$lib/components/NewProjectModal.svelte";
-    import OnboardingModal from "$lib/components/OnboardingModal.svelte";
-    import AnalysisWizard from "$lib/components/AnalysisWizard.svelte";
 </script>
 
 <svelte:head>
@@ -23,8 +21,6 @@
 
 <!-- Include Modals -->
 <NewProjectModal />
-<OnboardingModal />
-<AnalysisWizard />
 
 <!-- Include Footer -->
 <Footer />

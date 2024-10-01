@@ -1,12 +1,15 @@
 <script>
-    import { modalStore } from "$lib/stores/modalStore";
     import { onDestroy } from "svelte";
+    import { fade, fly } from "svelte/transition";
+    import { AnalysisWizardStore } from "$lib/stores/AnalysisWizardStore";
+    import Stepper from "./Stepper.svelte";
     import OnboardSteps from "./wizardSteps/OnboardSteps.svelte";
     import SelectAgentStep from "./wizardSteps/SelectAgentStep.svelte";
     import ConfigureAnalysisStep from "./wizardSteps/ConfigureAnalysisStep.svelte";
     import ReviewStartAgentStep from "./wizardSteps/ReviewStartAgentStep.svelte";
+    import ResultStep from "./wizardSteps/ResultStep.svelte";
 
-    let showWizard = false;
+    let showWizard = true; // Always show the wizard
 
     // Wizard state
     let currentStep = 1;
@@ -14,13 +17,9 @@
     let selectedAgent = null;
     let analysisConfig = {};
 
-    // Subscribe to modalStore
-    const unsubscribe = modalStore.subscribe((value) => {
-        showWizard = value.showModal && value.modalType === "analysisWizard";
-        console.log("Modal Store Updated:", value, "ShowWizard:", showWizard);
-        if (!showWizard) {
-            resetWizard();
-        }
+    // Update the AnalysisWizardStore
+    const wizardUnsubscribe = AnalysisWizardStore.subscribe((store) => {
+        currentStep = store.currentStep;
     });
 
     function resetWizard() {
@@ -28,6 +27,7 @@
         onboardData = {};
         selectedAgent = null;
         analysisConfig = {};
+        AnalysisWizardStore.set({ currentStep: 1 });
         console.log("Wizard reset");
     }
 
@@ -45,12 +45,14 @@
             }
         }
         currentStep += 1;
+        AnalysisWizardStore.set({ currentStep });
         console.log("Moved to step:", currentStep);
     }
 
     function handlePrev() {
         if (currentStep > 1) {
             currentStep -= 1;
+            AnalysisWizardStore.set({ currentStep });
             console.log("Moved back to step:", currentStep);
         }
     }
@@ -61,7 +63,10 @@
         console.log("Onboard Data:", onboardData);
         console.log("Selected Agent:", selectedAgent);
         console.log("Analysis Config:", analysisConfig);
-        closeWizard();
+        // Navigate to Result Step
+        currentStep += 1;
+        AnalysisWizardStore.set({ currentStep });
+        console.log("Moved to step:", currentStep);
     }
 
     function closeWizard() {
@@ -70,80 +75,87 @@
     }
 
     onDestroy(() => {
-        unsubscribe();
-        console.log("Unsubscribed from modalStore");
+        wizardUnsubscribe();
+        console.log("Unsubscribed from AnalysisWizardStore");
     });
 </script>
 
-{#if showWizard}
-    <div class="modal-overlay" on:click|self={closeWizard}>
-        <div class="wizard-container">
-            {#if currentStep === 1}
-                <OnboardSteps {onboardData} on:next={handleNext} />
-            {:else if currentStep === 2}
-                <SelectAgentStep
-                    {selectedAgent}
-                    on:next={handleNext}
-                    on:prev={handlePrev}
-                />
-            {:else if currentStep === 3}
-                <ConfigureAnalysisStep
-                    {analysisConfig}
-                    on:next={handleNext}
-                    on:prev={handlePrev}
-                />
-            {:else if currentStep === 4}
-                <ReviewStartAgentStep
-                    {onboardData}
-                    {selectedAgent}
-                    {analysisConfig}
-                    on:next={applyAnalysis}
-                    on:prev={handlePrev}
-                />
-            {/if}
-            <button class="btn-cancel" on:click={closeWizard}>Cancel</button>
-        </div>
+<div class="wizard-container" in:fade={{ duration: 300, delay: 300 }}>
+    <div class="stepper-container">
+        <Stepper />
     </div>
-{/if}
+    <div class="wizard-content" in:fly={{ y: 20, duration: 300, delay: 300 }}>
+        {#if currentStep === 1}
+            <OnboardSteps {onboardData} on:next={handleNext} />
+        {:else if currentStep === 2}
+            <SelectAgentStep
+                {selectedAgent}
+                on:next={handleNext}
+                on:prev={handlePrev}
+            />
+        {:else if currentStep === 3}
+            <ConfigureAnalysisStep
+                {analysisConfig}
+                on:next={handleNext}
+                on:prev={handlePrev}
+            />
+        {:else if currentStep === 4}
+            <ReviewStartAgentStep
+                {onboardData}
+                {selectedAgent}
+                {analysisConfig}
+                on:next={applyAnalysis}
+                on:prev={handlePrev}
+            />
+        {:else if currentStep === 5}
+            <ResultStep on:close={closeWizard} />
+        {/if}
+    </div>
+    {#if currentStep < 5}
+        <button class="btn-cancel" on:click={closeWizard}>Cancel</button>
+    {/if}
+</div>
 
 <style>
-    .modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(26, 42, 87, 0.8);
+    .wizard-container {
+        background: #fff9e6;
+        padding: 2rem;
+        border-radius: 20px;
+        width: 100%;
+        max-width: 800px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        position: relative;
+        margin: 2rem auto;
         display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 2000;
+        flex-direction: column;
     }
 
-    .wizard-container {
-        background: #fff;
+    .stepper-container {
+        margin-bottom: 2rem;
+    }
+
+    .wizard-content {
+        background: #ffffff;
         padding: 2rem;
-        border-radius: 10px;
-        width: 90%;
-        max-width: 600px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        position: relative;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     }
 
     .btn-cancel {
         position: absolute;
         top: 1rem;
         right: 1rem;
-        background-color: #dc3545;
+        background-color: #ff6b35;
         color: white;
         padding: 0.5rem 1rem;
         border: none;
         border-radius: 5px;
+        font-weight: bold;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        transition: all 0.3s ease;
     }
 
     .btn-cancel:hover {
-        background-color: #c82333;
+        background-color: #e55a2b;
     }
 </style>
