@@ -16,16 +16,23 @@
                 excitement, confusion—to help you build better, emotionally
                 connected products.
             </p>
-            <a
-                href="#demo"
-                class="cta-button"
+            <div
+                class="cta-container"
                 in:fly={{ y: 20, duration: 600, delay: 900 }}
-                on:mouseenter={() => y.set(-5)}
-                on:mouseleave={() => y.set(0)}
-                style="transform: translateY({$y}px)"
             >
-                See How It Works
-            </a>
+                <a
+                    href="#demo"
+                    class="cta-button primary"
+                    on:mouseenter={() => y.set(-5)}
+                    on:mouseleave={() => y.set(0)}
+                    style="transform: translateY({$y}px)"
+                >
+                    See How It Works
+                </a>
+                <a href="#contact" class="cta-button secondary">
+                    Book a Demo Call
+                </a>
+            </div>
         </div>
         <div class="right-column">
             <div
@@ -72,18 +79,51 @@
         margin-bottom: 2rem;
     }
 
+    .cta-container {
+        display: flex;
+        gap: 1rem;
+    }
+
     .cta-button {
         font-size: 1.2rem;
         padding: 0.9rem 1.8rem;
         border-radius: 50px;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 6px rgba(0, 123, 255, 0.1);
+        text-decoration: none;
+        font-weight: 600;
     }
 
-    .cta-button:hover {
+    .cta-button.primary {
+        background-color: #007bff;
+        color: white;
+        box-shadow: 0 0 20px rgba(0, 123, 255, 0.5);
+        animation: glow 1.5s ease-in-out infinite alternate;
+    }
+
+    .cta-button.primary:hover {
         background-color: #0056b3;
         transform: translateY(-2px);
-        box-shadow: 0 6px 8px rgba(0, 123, 255, 0.2);
+        box-shadow: 0 0 30px rgba(0, 123, 255, 0.7);
+    }
+
+    .cta-button.secondary {
+        background-color: transparent;
+        color: #007bff;
+        border: 2px solid #007bff;
+    }
+
+    .cta-button.secondary:hover {
+        background-color: rgba(0, 123, 255, 0.1);
+        transform: translateY(-2px);
+    }
+
+    @keyframes glow {
+        from {
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+        to {
+            box-shadow: 0 0 20px rgba(0, 123, 255, 0.8);
+        }
     }
 
     .video-placeholder {
@@ -105,5 +145,25 @@
         font-size: 1.5rem;
         font-weight: bold;
         text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 768px) {
+        .content {
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+        }
+
+        .cta-container {
+            flex-direction: column;
+        }
+
+        .cta-button {
+            width: 100%;
+            text-align: center;
+        }
     }
 </style>

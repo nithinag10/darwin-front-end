@@ -38,20 +38,29 @@
                 </p>
             </div>
         </div>
-        <button
-            in:fly={{ y: 20, duration: 600, delay: 1300 }}
-            on:mouseenter={() => y.set(-5)}
-            on:mouseleave={() => y.set(0)}
-            style="transform: translateY({$y}px)"
-        >
-            Get Emotion-Driven Insights & Development Tickets
-        </button>
     </div>
 </section>
 
+<div class="cta-strip" in:fade={{ duration: 800, delay: 1300 }}>
+    <div class="cta-content">
+        <h3>Ready to Revolutionize Your Development Process?</h3>
+        <p>
+            Get started with emotion-driven insights and expert development
+            tickets today.
+        </p>
+    </div>
+    <button
+        on:mouseenter={() => y.set(-5)}
+        on:mouseleave={() => y.set(0)}
+        style="transform: translateY({$y}px)"
+    >
+        Get Started Now
+    </button>
+</div>
+
 <style>
     section {
-        background-color: #ffffff;
+        background-color: #f8f9fa;
         padding: 4rem 2rem;
     }
 
@@ -77,10 +86,10 @@
 
     .card {
         flex: 1;
-        background-color: #f9f9f9;
-        border-radius: 8px;
+        background-color: white;
+        border-radius: 12px;
         padding: 2rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         transition:
             transform 0.3s ease,
             box-shadow 0.3s ease;
@@ -88,7 +97,7 @@
 
     .card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
     }
 
     .icon {
@@ -114,22 +123,49 @@
         color: #777777;
     }
 
-    button {
-        background-color: #ff6b6b;
+    .cta-strip {
+        background-color: #007bff;
         color: white;
+        padding: 2rem 4rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .cta-content {
+        text-align: left;
+    }
+
+    .cta-content h3 {
+        color: white;
+        font-size: 1.8rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .cta-content p {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1.1rem;
+        margin-bottom: 0;
+    }
+
+    button {
+        background-color: white;
+        color: #007bff;
         border: none;
         padding: 0.75rem 1.5rem;
-        border-radius: 4px;
+        border-radius: 50px;
         font-size: 1.1rem;
         font-weight: 600;
         cursor: pointer;
         transition:
             background-color 0.3s ease,
-            transform 0.2s ease;
+            transform 0.2s ease,
+            box-shadow 0.3s ease;
     }
 
     button:hover {
-        background-color: #ff5252;
+        background-color: #f8f9fa;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
     @media (max-width: 968px) {
@@ -138,6 +174,17 @@
         }
 
         .card {
+            margin-bottom: 1rem;
+        }
+
+        .cta-strip {
+            flex-direction: column;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .cta-content {
+            text-align: center;
             margin-bottom: 1rem;
         }
     }

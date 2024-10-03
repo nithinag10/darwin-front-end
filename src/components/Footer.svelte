@@ -21,9 +21,6 @@
                 <li><a href="#contact">Contact</a></li>
             </ul>
         </div>
-        <div class="cta-container">
-            <button>Schedule a Demo</button>
-        </div>
     </div>
     <div class="copyright">© 2023 EmotiAI. All rights reserved.</div>
 </footer>
