@@ -90,19 +90,46 @@
         border-radius: 12px;
         padding: 2rem;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        transition:
-            transform 0.3s ease,
-            box-shadow 0.3s ease;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, #007bff, #00c6ff);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 1;
     }
 
     .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        transform: translateY(-10px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .card:hover::before {
+        opacity: 0.1;
+    }
+
+    .card > * {
+        position: relative;
+        z-index: 2;
     }
 
     .icon {
         font-size: 3rem;
         margin-bottom: 1rem;
+        transition: transform 0.3s ease;
+    }
+
+    .card:hover .icon {
+        transform: scale(1.1);
     }
 
     h3 {
@@ -110,12 +137,22 @@
         font-size: 1.5rem;
         color: #333333;
         margin-bottom: 1rem;
+        transition: color 0.3s ease;
+    }
+
+    .card:hover h3 {
+        color: #007bff;
     }
 
     p {
         font-size: 1rem;
         color: #555555;
         margin-bottom: 1rem;
+        transition: color 0.3s ease;
+    }
+
+    .card:hover p {
+        color: #333333;
     }
 
     .subtext {
@@ -157,15 +194,13 @@
         font-size: 1.1rem;
         font-weight: 600;
         cursor: pointer;
-        transition:
-            background-color 0.3s ease,
-            transform 0.2s ease,
-            box-shadow 0.3s ease;
+        transition: all 0.3s ease;
     }
 
     button:hover {
         background-color: #f8f9fa;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transform: translateY(-2px);
     }
 
     @media (max-width: 968px) {
