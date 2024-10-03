@@ -1,6 +1,7 @@
 <script>
     import logo from "../asset/logo.svg";
     import { onMount } from "svelte";
+    import { goto } from "$app/navigation";
 
     let isMenuOpen = false;
     let isMobile = false;
@@ -11,6 +12,10 @@
 
     function checkMobile() {
         isMobile = window.innerWidth <= 768;
+    }
+
+    function navigateToLogin() {
+        goto("/login");
     }
 
     onMount(() => {
@@ -33,7 +38,9 @@
             <a href="#how-it-works">How It Works</a>
             <a href="#demo">Demo</a>
             <a href="#contact">Contact</a>
-            <button class="cta-button">Schedule a Demo</button>
+            <button class="cta-button" on:click={navigateToLogin}
+                >Try It Free</button
+            >
         </nav>
     </div>
 </header>
