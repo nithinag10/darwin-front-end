@@ -41,17 +41,14 @@
         gap: 2rem;
     }
 
-    .company-info {
+    .company-info,
+    .footer-links {
         flex: 1 1 300px;
     }
 
     .logo {
         height: 2.5rem;
         margin-bottom: 1rem;
-    }
-
-    .footer-links {
-        flex: 1 1 200px;
     }
 
     .footer-links h3 {
@@ -113,10 +110,17 @@
     @media (max-width: 768px) {
         .footer-content {
             flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .company-info,
+        .footer-links {
+            flex: 1 1 100%;
         }
 
         .cta-container {
-            justify-content: flex-start;
+            justify-content: center;
             margin-top: 1rem;
         }
 

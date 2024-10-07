@@ -18,6 +18,10 @@
         goto("/login");
     }
 
+    function navigateToDashboard() {
+        goto("/dashboard");
+    }
+
     onMount(() => {
         checkMobile();
         window.addEventListener("resize", checkMobile);
@@ -38,9 +42,6 @@
             <a href="#how-it-works">How It Works</a>
             <a href="#demo">Demo</a>
             <a href="#contact">Contact</a>
-            <button class="cta-button" on:click={navigateToLogin}
-                >Try It Free</button
-            >
         </nav>
     </div>
 </header>
@@ -62,6 +63,7 @@
         justify-content: space-between;
         align-items: center;
         padding: 0 2rem;
+        flex-wrap: wrap; /* Allow wrapping */
     }
 
     .logo {
@@ -72,6 +74,7 @@
         display: flex;
         gap: 2.5rem;
         align-items: center;
+        flex-wrap: wrap; /* Allow wrapping */
     }
 
     a {
@@ -111,7 +114,7 @@
 
     @media (max-width: 768px) {
         .container {
-            flex-wrap: wrap;
+            padding: 0 1rem;
         }
 
         .menu-toggle {
@@ -125,16 +128,7 @@
         nav {
             flex-direction: column;
             align-items: flex-start;
-            gap: 1rem;
             width: 100%;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-        }
-
-        nav.open {
-            max-height: 300px;
-            margin-top: 1rem;
         }
 
         a {

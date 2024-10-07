@@ -5,9 +5,12 @@
     let email = "";
     let password = "";
 
-    function handleLogin() {
+    async function handleLogin() {
         // Implement login logic here
         console.log("Login attempted", { email, password });
+
+        // Assuming login is successful, redirect to dashboard
+        goto("/dashboard");
     }
 
     function handleGoogleSignIn() {

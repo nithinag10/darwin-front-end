@@ -6,9 +6,12 @@
     let password = "";
     let confirmPassword = "";
 
-    function handleSignup() {
+    async function handleSignup() {
         // Implement signup logic here
         console.log("Signup attempted", { email, password, confirmPassword });
+
+        // Assuming signup is successful, redirect to dashboard
+        goto("/dashboard");
     }
 
     function handleGoogleSignIn() {
