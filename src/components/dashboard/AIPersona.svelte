@@ -12,21 +12,21 @@
         title: "Tech-Savvy Professional",
         description:
             "Experienced in using modern technology and expects seamless experiences. Values efficiency and innovative solutions.",
-        icon: "/path-to-ai-persona-icon.png",
+        emoji: "💻",
     };
 
     let simulationScopeContent = {
         title: "Full Product Experience",
         description:
             "This simulation covers the entire product journey, from onboarding to advanced feature usage.",
-        icon: "/path-to-simulation-scope-icon.png",
+        emoji: "🎯",
     };
 
     let productDetailsContent = {
         title: "EmotiAI Dashboard",
         description:
             "An AI-powered emotional intelligence platform for analyzing and improving user experiences.",
-        icon: "/path-to-product-details-icon.png",
+        emoji: "📊",
     };
 
     function getActiveContent() {
@@ -42,19 +42,16 @@
         }
     }
 
-    function handleEdit() {
-        dispatch("edit");
-    }
-
     function navigateToPersonaSelection() {
         goto("/ai-persona-selection");
     }
 
+    function goToSimulationScope() {
+        goto("/simulation-scope");
+    }
+
     function goToProductDetails() {
-        // Implement navigation to the product details page
-        // This could be done using Svelte routing or by emitting an event
-        // that the parent component can handle
-        dispatch("editProduct");
+        goto("/product-details");
     }
 </script>
 
@@ -72,11 +69,7 @@
     </div>
     <div class="content" in:fade>
         {#key activeTab}
-            <img
-                src={getActiveContent().icon}
-                alt={activeTab}
-                class="content-icon"
-            />
+            <span class="content-emoji">{getActiveContent().emoji}</span>
             <div>
                 <h3>{getActiveContent().title}</h3>
                 <p>{getActiveContent().description}</p>
@@ -86,6 +79,14 @@
                         on:click={navigateToPersonaSelection}
                     >
                         Change AI Persona
+                    </button>
+                {:else if activeTab === "Simulation Scope"}
+                    <button class="edit-button" on:click={goToSimulationScope}>
+                        Edit Simulation Scope
+                    </button>
+                {:else if activeTab === "Product Details"}
+                    <button class="edit-button" on:click={goToProductDetails}>
+                        Edit Product Details
                     </button>
                 {/if}
             </div>
@@ -133,12 +134,9 @@
         text-align: center;
     }
 
-    .content-icon {
-        width: 64px;
-        height: 64px;
+    .content-emoji {
+        font-size: 48px;
         margin: 0 auto 1rem;
-        border-radius: 50%;
-        object-fit: cover;
     }
 
     h3 {

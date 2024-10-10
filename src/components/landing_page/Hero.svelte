@@ -9,12 +9,12 @@
     <div class="content">
         <div class="left-column">
             <h1 in:fly={{ y: 20, duration: 600, delay: 500 }}>
-                Bridge the Emotional Gap Between Users and Your Product
+                Understand Your Customers Like Never Before—Without Data Burden
             </h1>
             <p in:fly={{ y: 20, duration: 600, delay: 700 }}>
-                Our AI agents simulate real user emotions—frustration,
-                excitement, confusion—to help you build better, emotionally
-                connected products.
+                Our AI agents mimic user emotions and actions, offering a deep
+                understanding of customer needs without the need for large
+                datasets
             </p>
             <div
                 class="cta-container"

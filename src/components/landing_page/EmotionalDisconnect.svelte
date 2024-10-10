@@ -16,20 +16,19 @@
     {#if isInView}
         <div class="content">
             <h2 in:fly={{ y: 20, duration: 600 }}>
-                Beyond Numbers, Into Emotions
+                Your Shortcut to Customer Understanding
             </h2>
             <p class="main-text" in:fly={{ y: 20, duration: 600, delay: 200 }}>
-                Your data shows what users do, but it misses how they feel. With <span
-                    class="highlight">LemonSoda.ai</span
-                >, you can go beyond the numbers and gain real emotional
-                insights—understanding your users' true frustrations, delights,
-                and needs.
+                Traditional analytics tell you what users do; we reveal how they
+                feel. <span class="highlight">LemonSoda.ai</span> simulate real user
+                emotions—frustration, excitement, confusion—to help you build products
+                that truly resonate.
             </p>
             <p class="cta-text" in:fly={{ y: 20, duration: 600, delay: 400 }}>
-                Try something new—experience the first solution on the market
-                that empowers you to make product decisions based on emotions,
-                crafted by a team with a fresh perspective on what's possible in
-                AI.
+                Whether you're a startup without an existing customer base or an
+                established company looking to delve deeper, our solution
+                provides unparalleled emotional insights without the need for
+                extensive data.
             </p>
         </div>
     {/if}

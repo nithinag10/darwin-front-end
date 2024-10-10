@@ -10,7 +10,7 @@
         {
             id: 1,
             name: "Tech-Savvy Professional",
-            avatar: "/images/tech-savvy-avatar.png",
+            emoji: "💻",
             summary:
                 "Experienced in using modern technology and expects seamless experiences.",
             industry: "Technology",
@@ -35,7 +35,7 @@
         {
             id: 2,
             name: "First-Time User",
-            avatar: "/images/first-time-user-avatar.png",
+            emoji: "🆕",
             summary:
                 "New to the product and may need extra guidance and support.",
             industry: "Education",
@@ -56,7 +56,7 @@
         {
             id: 3,
             name: "Senior Executive",
-            avatar: "/images/senior-executive-avatar.png",
+            emoji: "👔",
             summary:
                 "Busy decision-maker looking for high-level insights and efficiency.",
             industry: "Finance",
@@ -77,7 +77,7 @@
         {
             id: 4,
             name: "Creative Professional",
-            avatar: "/images/creative-professional-avatar.png",
+            emoji: "🎨",
             summary:
                 "Visually-oriented user seeking intuitive and inspiring tools.",
             industry: "Design",
@@ -105,7 +105,7 @@
         {
             id: 5,
             name: "Small Business Owner",
-            avatar: "/images/small-business-owner-avatar.png",
+            emoji: "🏪",
             summary:
                 "Entrepreneur juggling multiple responsibilities and seeking cost-effective solutions.",
             industry: "Retail",
@@ -126,7 +126,7 @@
         {
             id: 6,
             name: "Healthcare Professional",
-            avatar: "/images/healthcare-professional-avatar.png",
+            emoji: "⚕️",
             summary:
                 "Dedicated practitioner focused on patient care and medical accuracy.",
             industry: "Healthcare",
@@ -150,9 +150,9 @@
         {
             id: 7,
             name: "Remote Worker",
-            avatar: "/images/remote-worker-avatar.png",
+            emoji: "🏠",
             summary:
-                "Flexible professional adapting to digital collaboration and virtual environments.",
+                "Professional adapting to remote work environments and digital collaboration tools.",
             industry: "Various",
             demographics: {
                 age: "22-50",
@@ -178,9 +178,9 @@
         {
             id: 8,
             name: "Manufacturing Manager",
-            avatar: "/images/manufacturing-manager-avatar.png",
+            emoji: "🏭",
             summary:
-                "Experienced overseer of production processes seeking optimization and quality control.",
+                "Oversees production processes and seeks to optimize efficiency and quality.",
             industry: "Manufacturing",
             demographics: {
                 age: "35-55",
@@ -206,7 +206,7 @@
         {
             id: 9,
             name: "Startup Founder",
-            avatar: "/images/startup-founder-avatar.png",
+            emoji: "🚀",
             summary:
                 "Ambitious entrepreneur seeking scalable solutions for rapid growth.",
             industry: "Technology",
@@ -227,7 +227,7 @@
         {
             id: 10,
             name: "Educator",
-            avatar: "/images/educator-avatar.png",
+            emoji: "🍎",
             summary:
                 "Dedicated teacher looking for tools to enhance student engagement and learning outcomes.",
             industry: "Education",
@@ -251,9 +251,9 @@
         {
             id: 11,
             name: "Retiree",
-            avatar: "/images/retiree-avatar.png",
+            emoji: "🌴",
             summary:
-                "Active senior citizen exploring technology for personal interests and staying connected.",
+                "Senior individual exploring technology for personal interests and staying connected.",
             industry: "Various",
             demographics: {
                 age: "65+",
@@ -275,9 +275,9 @@
         {
             id: 12,
             name: "Freelance Content Creator",
-            avatar: "/images/content-creator-avatar.png",
+            emoji: "📸",
             summary:
-                "Independent professional producing multimedia content for various platforms.",
+                "Independent professional producing various forms of digital content.",
             industry: "Media",
             demographics: {
                 age: "22-40",
@@ -339,8 +339,31 @@
     }
 
     function selectPersona(persona) {
-        dispatch("select", { persona });
-        closePersonaModal();
+        // Assuming you have a modal component or function to show the modal
+        showModal({
+            title: persona.name,
+            content: `
+                <div class="persona-modal-content">
+                    <span class="persona-emoji">${persona.emoji}</span>
+                    <p><strong>Summary:</strong> ${persona.summary}</p>
+                    <p><strong>Industry:</strong> ${persona.industry}</p>
+                    <p><strong>Demographics:</strong></p>
+                    <ul>
+                        <li>Age: ${persona.demographics.age}</li>
+                        <li>Gender: ${persona.demographics.gender}</li>
+                        <li>Location: ${persona.demographics.location}</li>
+                        <li>Occupation: ${persona.demographics.occupation}</li>
+                    </ul>
+                    <p><strong>Traits:</strong> ${persona.traits.join(", ")}</p>
+                    <p><strong>Goals:</strong> ${persona.goals.join(", ")}</p>
+                    <p><strong>Pain Points:</strong> ${persona.painPoints.join(", ")}</p>
+                    <p><strong>Emotional Tendencies:</strong> ${persona.emotionalTendencies.join(", ")}</p>
+                </div>
+            `,
+            onConfirm: () => {
+                dispatch("select", { persona });
+            },
+        });
     }
 </script>
 
@@ -388,11 +411,7 @@
                     class="persona-card"
                     on:click={() => openPersonaModal(persona)}
                 >
-                    <img
-                        src={persona.avatar}
-                        alt={persona.name}
-                        class="avatar"
-                    />
+                    <span class="persona-emoji">{persona.emoji}</span>
                     <h3>{persona.name}</h3>
                     <p>{persona.summary}</p>
                     <span class="industry-tag">{persona.industry}</span>
@@ -429,11 +448,7 @@
                 >&times;</button
             >
             <div class="modal-header">
-                <img
-                    src={selectedPersona.avatar}
-                    alt={selectedPersona.name}
-                    class="modal-avatar"
-                />
+                <span class="modal-emoji">{selectedPersona.emoji}</span>
                 <div>
                     <h2>{selectedPersona.name}</h2>
                     <p class="modal-summary">{selectedPersona.summary}</p>
@@ -612,13 +627,9 @@
         box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
     }
 
-    .avatar {
-        width: 70px;
-        height: 70px;
-        border-radius: 50%;
-        object-fit: cover;
-        margin-bottom: 1rem;
-        border: 2px solid #e2e8f0;
+    .persona-emoji {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
     }
 
     h3 {
@@ -740,13 +751,9 @@
         border-bottom: 1px solid #e2e8f0;
     }
 
-    .modal-avatar {
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-        object-fit: cover;
+    .modal-emoji {
+        font-size: 4rem;
         margin-right: 1.5rem;
-        border: 3px solid #4299e1;
     }
 
     .modal-content h2 {
@@ -842,5 +849,20 @@
 
     .select-button:hover {
         background-color: #3182ce;
+    }
+
+    :global(.persona-modal-content) {
+        text-align: left;
+    }
+
+    :global(.persona-modal-content .persona-emoji) {
+        font-size: 3rem;
+        display: block;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+    :global(.persona-modal-content ul) {
+        padding-left: 1.5rem;
     }
 </style>

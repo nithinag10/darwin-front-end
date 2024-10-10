@@ -1,17 +1,20 @@
 <script>
     import { fade, fly } from "svelte/transition";
     let suggestions = [
-        { title: "Implement guided tutorial", icon: "✅" },
-        { title: "Optimize image loading", icon: "🖼️" },
+        { title: "Implement guided tutorial", emoji: "🚀" },
+        { title: "Optimize image loading", emoji: "🖼️" },
+        { title: "Enhance user onboarding", emoji: "🌟" },
+        { title: "Improve mobile responsiveness", emoji: "📱" },
+        { title: "Add dark mode option", emoji: "🌙" },
     ];
 </script>
 
 <div class="card">
-    <h2>Top AI Suggestions</h2>
+    <h2>Top AI Suggestions 💡</h2>
     <ul>
         {#each suggestions as suggestion, i}
             <li in:fly={{ y: 20, duration: 300, delay: 150 * i }}>
-                <span class="icon">{suggestion.icon}</span>
+                <span class="emoji">{suggestion.emoji}</span>
                 <span class="title">{suggestion.title}</span>
             </li>
         {/each}
@@ -51,12 +54,13 @@
         background-color: #edf2f7;
     }
 
-    .icon {
-        font-size: 1.2rem;
-        margin-right: 0.5rem;
+    .emoji {
+        font-size: 1.5rem;
+        margin-right: 0.75rem;
     }
 
     .title {
         color: #4a5568;
+        font-size: 0.95rem;
     }
 </style>
