@@ -1,6 +1,6 @@
 <script>
     import { fade } from "svelte/transition";
-    let userName = "Sarah";
+    let userName = "Shankar";
     let currentTime = new Date();
     $: greeting = getGreeting(currentTime);
 
@@ -15,7 +15,7 @@
 <div class="hero-section" in:fade={{ duration: 300, delay: 150 }}>
     <div class="hero-content">
         <h1>{greeting}, {userName}!</h1>
-        <p>Welcome to your EmotiAI Dashboard. Here's your daily overview.</p>
+        <p>Welcome to your Dashboard. Here's your daily overview.</p>
         <button class="cta-button">Start New Analysis</button>
     </div>
     <div class="hero-image">

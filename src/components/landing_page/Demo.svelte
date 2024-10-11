@@ -19,9 +19,16 @@
             See Our Product in Action
         </h2>
         <div class="video-container" in:fade={{ duration: 800, delay: 500 }}>
-            <div class="video-placeholder">
-                <span>Demo Video Coming Soon</span>
-                <button class="play-button">▶</button>
+            <div style="position: relative; padding-bottom: 57%; height: 0;">
+                <iframe
+                    src="https://obedient-magpie.clueso.io/embed/00a216cb-7c38-4238-a340-a2a5e562fd1c"
+                    frameborder="0"
+                    webkitallowfullscreen
+                    mozallowfullscreen
+                    allowfullscreen
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+                >
+                </iframe>
             </div>
         </div>
         <p class="description">
@@ -69,39 +76,6 @@
         overflow: hidden;
     }
 
-    .video-placeholder {
-        background: linear-gradient(135deg, #6e8efb, #a777e3);
-        aspect-ratio: 16 / 9;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.5rem;
-        color: white;
-        position: relative;
-    }
-
-    .play-button {
-        background-color: rgba(255, 255, 255, 0.2);
-        border: 2px solid white;
-        color: white;
-        font-size: 2rem;
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        margin-top: 1rem;
-    }
-
-    .play-button:hover {
-        background-color: rgba(255, 255, 255, 0.3);
-        transform: scale(1.1);
-    }
-
     .description {
         max-width: 600px;
         margin: 0 auto;
@@ -117,12 +91,6 @@
 
         h2 {
             font-size: 2rem;
-        }
-
-        .play-button {
-            width: 60px;
-            height: 60px;
-            font-size: 1.5rem;
         }
 
         .description {

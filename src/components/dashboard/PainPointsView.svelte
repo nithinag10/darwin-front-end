@@ -3,7 +3,7 @@
     import { writable } from "svelte/store";
     import Breadcrumb from "../Breadcrumb.svelte";
 
-    let painPoints = writable([
+    export const painPoints = writable([
         {
             id: 1,
             title: "Product Pages Have Excessive Information Leading to User Overwhelm",

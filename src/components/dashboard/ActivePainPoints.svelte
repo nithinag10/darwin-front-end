@@ -13,11 +13,6 @@
             severity: "Medium",
             impact: "Abandoned Carts",
         },
-        {
-            title: "Mobile Navigation Issues",
-            severity: "Low",
-            impact: "Reduced Mobile Engagement",
-        },
     ];
 
     function viewAllPainPoints() {

@@ -23,10 +23,10 @@
     };
 
     let productDetailsContent = {
-        title: "EmotiAI Dashboard",
+        title: "Amazon E-commerce Platform",
         description:
-            "An AI-powered emotional intelligence platform for analyzing and improving user experiences.",
-        emoji: "📊",
+            "A global online marketplace offering a wide range of products, services, and digital content to millions of customers worldwide.",
+        emoji: "🛒",
     };
 
     function getActiveContent() {
