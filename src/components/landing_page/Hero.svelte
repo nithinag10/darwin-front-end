@@ -1,11 +1,23 @@
 <script>
     import { fade, fly } from "svelte/transition";
     import { spring } from "svelte/motion";
+    import { onMount } from "svelte";
 
     let y = spring(0, { stiffness: 0.1, damping: 0.25 });
+    let headerHeight = 0;
+
+    onMount(() => {
+        const header = document.querySelector("header");
+        if (header) {
+            headerHeight = header.offsetHeight;
+        }
+    });
 </script>
 
-<section in:fade={{ duration: 800, delay: 300 }}>
+<section
+    in:fade={{ duration: 800, delay: 300 }}
+    style="margin-top: -{headerHeight}px;"
+>
     <div class="content">
         <div class="left-column">
             <h1 in:fly={{ y: 20, duration: 600, delay: 500 }}>
@@ -13,8 +25,8 @@
             </h1>
             <p in:fly={{ y: 20, duration: 600, delay: 700 }}>
                 Our AI agents mimic user emotions and actions, offering a deep
-                understanding of customer needs without the need for large
-                datasets
+                understanding of customer needs for your product without the
+                need for large customer data
             </p>
             <div
                 class="cta-container"
@@ -46,14 +58,16 @@
 <style>
     section {
         background: linear-gradient(135deg, #f7f7f7 0%, #e0e0e0 100%);
-        min-height: 90vh;
+        min-height: 100vh;
         display: flex;
         align-items: center;
+        justify-content: center;
         padding: 4rem 2rem;
     }
 
     .content {
         max-width: 1200px;
+        width: 100%;
         margin: 0 auto;
         display: flex;
         align-items: center;
@@ -148,6 +162,10 @@
     }
 
     @media (max-width: 768px) {
+        section {
+            padding: 2rem 1rem;
+        }
+
         .content {
             flex-direction: column;
             gap: 2rem;

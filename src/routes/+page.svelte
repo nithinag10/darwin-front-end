@@ -12,7 +12,7 @@
     <Header />
     <Hero />
     <EmotionalDisconnect />
-    <HowItWorks />
+    <!-- <HowItWorks /> -->
     <FutureFocused />
     <Demo />
     <Footer />
