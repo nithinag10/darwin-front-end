@@ -2,9 +2,20 @@
     import { fade, fly } from "svelte/transition";
     import { spring } from "svelte/motion";
     import { onMount } from "svelte";
+    import BookDemoModal from "../BookDemoModal.svelte";
+    import Toast from "../Toast.svelte";
 
     let y = spring(0, { stiffness: 0.1, damping: 0.25 });
     let headerHeight = 0;
+    let showModal = false;
+    let showToast = false;
+    let toastMessage = "";
+
+    function vibrate() {
+        if (navigator.vibrate) {
+            navigator.vibrate(50);
+        }
+    }
 
     onMount(() => {
         const header = document.querySelector("header");
@@ -12,12 +23,23 @@
             headerHeight = header.offsetHeight;
         }
     });
+
+    function openModal() {
+        vibrate();
+        showToast = true;
+        toastMessage = "Opening demo booking...";
+        setTimeout(() => {
+            showToast = false;
+            showModal = true;
+        }, 1500);
+    }
+
+    function closeModal() {
+        showModal = false;
+    }
 </script>
 
-<section
-    in:fade={{ duration: 800, delay: 300 }}
-    style="margin-top: -{headerHeight}px;"
->
+<section in:fade={{ duration: 800, delay: 300 }}>
     <div class="content">
         <div class="left-column">
             <h1 in:fly={{ y: 20, duration: 600, delay: 500 }}>
@@ -41,55 +63,74 @@
                 >
                     See How It Works
                 </a>
-                <a href="#contact" class="cta-button secondary">
+                <button class="cta-button secondary" on:click={openModal}>
                     Book a Demo Call
-                </a>
+                </button>
             </div>
         </div>
         <div class="right-column">
             <div
-                class="video-placeholder"
+                class="video-container"
                 in:fade={{ duration: 800, delay: 1100 }}
-            ></div>
+            >
+                <iframe
+                    src="https://www.canva.com/design/DAGTSEt9a9M/hcCWlbd6EHTH3ViYTnizKg/watch?embed&autoplay=1&loop=1&controls=0&muted=1"
+                    allowfullscreen
+                    allow="fullscreen"
+                    title="Product Demo Video"
+                >
+                </iframe>
+            </div>
         </div>
     </div>
 </section>
 
+{#if showModal}
+    <BookDemoModal on:close={closeModal} />
+{/if}
+
+{#if showToast}
+    <Toast message={toastMessage} />
+{/if}
+
 <style>
     section {
         background: linear-gradient(135deg, #f7f7f7 0%, #e0e0e0 100%);
-        min-height: 100vh;
+        height: 100vh; /* Full viewport height */
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 4rem 2rem;
+        padding: 0 2rem;
+        box-sizing: border-box;
+        position: relative; /* For absolute positioning of children if needed */
     }
 
     .content {
         max-width: 1200px;
         width: 100%;
-        margin: 0 auto;
         display: flex;
         align-items: center;
         gap: 4rem;
     }
 
     .left-column {
-        flex: 1.2;
+        flex: 1;
+        max-width: 50%;
     }
 
     .right-column {
         flex: 1;
+        max-width: 50%;
     }
 
     h1 {
-        font-size: 3.2rem;
+        font-size: 2.5rem;
         margin-bottom: 1.5rem;
         line-height: 1.2;
     }
 
     p {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         margin-bottom: 2rem;
     }
 
@@ -99,25 +140,20 @@
     }
 
     .cta-button {
-        font-size: 1.2rem;
-        padding: 0.9rem 1.8rem;
+        font-size: 1rem;
+        padding: 0.8rem 1.5rem;
         border-radius: 50px;
         transition: all 0.3s ease;
         text-decoration: none;
         font-weight: 600;
+        cursor: pointer;
+        border: none;
     }
 
     .cta-button.primary {
         background-color: #007bff;
         color: white;
         box-shadow: 0 0 20px rgba(0, 123, 255, 0.5);
-        animation: glow 1.5s ease-in-out infinite alternate;
-    }
-
-    .cta-button.primary:hover {
-        background-color: #0056b3;
-        transform: translateY(-2px);
-        box-shadow: 0 0 30px rgba(0, 123, 255, 0.7);
     }
 
     .cta-button.secondary {
@@ -126,44 +162,25 @@
         border: 2px solid #007bff;
     }
 
-    .cta-button.secondary:hover {
-        background-color: rgba(0, 123, 255, 0.1);
-        transform: translateY(-2px);
-    }
-
-    @keyframes glow {
-        from {
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-        }
-        to {
-            box-shadow: 0 0 20px rgba(0, 123, 255, 0.8);
-        }
-    }
-
-    .video-placeholder {
-        background: linear-gradient(45deg, #007bff, #ff6b6b);
+    .video-container {
+        width: 100%;
         aspect-ratio: 16 / 9;
-        border-radius: 12px;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         overflow: hidden;
-        position: relative;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     }
 
-    .video-placeholder::before {
-        content: "Video Coming Soon";
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: white;
-        font-size: 1.5rem;
-        font-weight: bold;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
     }
 
     @media (max-width: 768px) {
         section {
-            padding: 2rem 1rem;
+            height: auto;
+            min-height: 100vh;
+            padding: 4rem 1rem;
         }
 
         .content {
@@ -171,17 +188,33 @@
             gap: 2rem;
         }
 
+        .left-column,
+        .right-column {
+            max-width: 100%;
+        }
+
         h1 {
-            font-size: 2.5rem;
+            font-size: 2rem;
+            text-align: center;
+        }
+
+        p {
+            text-align: center;
         }
 
         .cta-container {
             flex-direction: column;
+            align-items: center;
         }
 
         .cta-button {
             width: 100%;
+            max-width: 300px;
             text-align: center;
+        }
+
+        .video-container {
+            margin-top: 2rem;
         }
     }
 </style>

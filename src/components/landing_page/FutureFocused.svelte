@@ -1,11 +1,32 @@
 <script>
     import { fade, fly } from "svelte/transition";
     import { spring } from "svelte/motion";
+    import BookDemoModal from "../BookDemoModal.svelte";
 
     let y = spring(0, { stiffness: 0.1, damping: 0.25 });
+    let showModal = false;
+
+    function openModal() {
+        showModal = true;
+    }
+
+    function closeModal() {
+        showModal = false;
+    }
+
+    function vibrate() {
+        if (navigator.vibrate) {
+            navigator.vibrate(50);
+        }
+    }
+
+    function handleBookDemo() {
+        vibrate();
+        openModal();
+    }
 </script>
 
-<section in:fade={{ duration: 800, delay: 300 }}>
+<section id="future-focused" in:fade={{ duration: 800, delay: 300 }}>
     <div class="content">
         <h2 in:fly={{ y: 20, duration: 600, delay: 500 }}>
             Move from Problems to Progress: Save Development Time
@@ -43,20 +64,25 @@
 
 <div class="cta-strip" in:fade={{ duration: 800, delay: 1300 }}>
     <div class="cta-content">
-        <h3>Ready to Revolutionize Your Development Process?</h3>
+        <h3>Be One of the First to Experience This New Market Innovation!</h3>
         <p>
-            Get started with emotion-driven insights and expert development
-            tickets today.
+            Join a select group of early customers and book your slot to explore
+            our unique solution.
         </p>
     </div>
     <button
         on:mouseenter={() => y.set(-5)}
         on:mouseleave={() => y.set(0)}
+        on:click={handleBookDemo}
         style="transform: translateY({$y}px)"
     >
-        Get Started Now
+        Book Demo Today
     </button>
 </div>
+
+{#if showModal}
+    <BookDemoModal on:close={closeModal} />
+{/if}
 
 <style>
     section {

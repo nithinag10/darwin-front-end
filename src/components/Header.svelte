@@ -18,8 +18,11 @@
         goto("/login");
     }
 
-    function navigateToDashboard() {
-        goto("/dashboard");
+    function scrollToFeatures() {
+        const featuresSection = document.querySelector("#future-focused");
+        if (featuresSection) {
+            featuresSection.scrollIntoView({ behavior: "smooth" });
+        }
     }
 
     onMount(() => {
@@ -37,9 +40,8 @@
                 {isMenuOpen ? "✕" : "☰"}
             </button>
         {/if}
-        <nav class:open={isMenuOpen || !isMobile}>
-            <a href="#features">Features</a>
-            <a href="#how-it-works">How It Works</a>
+        <nav class:open={isMenuOpen} class:mobile={isMobile}>
+            <a href="#" on:click|preventDefault={scrollToFeatures}>Features</a>
             <a href="#demo">Demo</a>
             <a href="#contact">Contact</a>
         </nav>
@@ -74,7 +76,15 @@
         display: flex;
         gap: 2.5rem;
         align-items: center;
-        flex-wrap: wrap; /* Allow wrapping */
+        flex-wrap: wrap;
+    }
+
+    nav.mobile {
+        display: none;
+    }
+
+    nav.mobile.open {
+        display: flex;
     }
 
     a {
@@ -115,9 +125,14 @@
     @media (max-width: 768px) {
         .container {
             padding: 0 1rem;
+            flex-direction: column;
+            align-items: flex-start;
         }
 
         .menu-toggle {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
             display: block;
             background: none;
             border: none;
@@ -129,17 +144,20 @@
             flex-direction: column;
             align-items: flex-start;
             width: 100%;
+            padding-top: 1rem;
+        }
+
+        nav.mobile {
+            display: none;
+        }
+
+        nav.mobile.open {
+            display: flex;
         }
 
         a {
             width: 100%;
             padding: 0.5rem 0;
-        }
-
-        .cta-button {
-            width: 100%;
-            text-align: center;
-            margin-top: 0.5rem;
         }
     }
 </style>
