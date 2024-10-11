@@ -2,6 +2,7 @@
     import Header from "../components/Header.svelte";
     import Hero from "../components/landing_page/Hero.svelte";
     import EmotionalDisconnect from "../components/landing_page/EmotionalDisconnect.svelte";
+    import HowItWorks from "../components/landing_page/HowItWorks.svelte";
     import FutureFocused from "../components/landing_page/FutureFocused.svelte";
     import Demo from "../components/landing_page/Demo.svelte";
     import Footer from "../components/Footer.svelte";
@@ -11,6 +12,7 @@
     <Header />
     <Hero />
     <EmotionalDisconnect />
+    <HowItWorks />
     <FutureFocused />
     <Demo />
     <Footer />
