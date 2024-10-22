@@ -24,7 +24,7 @@
         </div>
     </div>
     <div class="copyright">
-        <p>&copy; 2024 LemonSoda. All rights reserved.</p>
+        <p>&copy; 2024 LemonSoda.ai All rights reserved.</p>
     </div>
 </footer>
 
