@@ -1,8 +1,9 @@
 <script>
     import { fade, scale } from "svelte/transition";
     import { createEventDispatcher } from "svelte";
-    import Header from "../components/Header.svelte";
     import Footer from "../components/Footer.svelte";
+    import { goto } from "$app/navigation";
+    import { selectedPersona } from "../stores/personaStore.js";
 
     const dispatch = createEventDispatcher();
 
@@ -296,7 +297,6 @@
     ];
 
     let filteredPersonas = personas;
-    let selectedPersona = null;
 
     // Filter options
     let industries = [...new Set(personas.map((p) => p.industry))];
@@ -331,79 +331,25 @@
     }
 
     function openPersonaModal(persona) {
-        selectedPersona = persona;
+        $selectedPersona = persona;
     }
 
     function closePersonaModal() {
-        selectedPersona = null;
+        $selectedPersona = null;
     }
 
     function selectPersona(persona) {
-        // Assuming you have a modal component or function to show the modal
-        showModal({
-            title: persona.name,
-            content: `
-                <div class="persona-modal-content">
-                    <span class="persona-emoji">${persona.emoji}</span>
-                    <p><strong>Summary:</strong> ${persona.summary}</p>
-                    <p><strong>Industry:</strong> ${persona.industry}</p>
-                    <p><strong>Demographics:</strong></p>
-                    <ul>
-                        <li>Age: ${persona.demographics.age}</li>
-                        <li>Gender: ${persona.demographics.gender}</li>
-                        <li>Location: ${persona.demographics.location}</li>
-                        <li>Occupation: ${persona.demographics.occupation}</li>
-                    </ul>
-                    <p><strong>Traits:</strong> ${persona.traits.join(", ")}</p>
-                    <p><strong>Goals:</strong> ${persona.goals.join(", ")}</p>
-                    <p><strong>Pain Points:</strong> ${persona.painPoints.join(", ")}</p>
-                    <p><strong>Emotional Tendencies:</strong> ${persona.emotionalTendencies.join(", ")}</p>
-                </div>
-            `,
-            onConfirm: () => {
-                dispatch("select", { persona });
-            },
-        });
+        $selectedPersona = persona;
+        goto("/product-details");
     }
 </script>
 
-<Header />
-
 <main class="ai-persona-selection">
     <div class="container">
-        <div class="header">
-            <h1>
-                Select Your <span class="highlight">AI Customer Persona</span>
-            </h1>
-            <div class="subheader">
-                <div class="line"></div>
-                <p class="description">
-                    Simulate user interactions & uncover insights
-                </p>
-                <div class="line"></div>
-            </div>
-        </div>
-
-        <div class="filters">
-            <select bind:value={selectedIndustry}>
-                <option value="">All Industries</option>
-                {#each industries as industry}
-                    <option value={industry}>{industry}</option>
-                {/each}
-            </select>
-            <select bind:value={selectedAgeRange}>
-                <option value="">All Age Ranges</option>
-                {#each ageRanges as range}
-                    <option value={range}>{range}</option>
-                {/each}
-            </select>
-            <select bind:value={selectedLocation}>
-                <option value="">All Locations</option>
-                {#each locations as location}
-                    <option value={location}>{location}</option>
-                {/each}
-            </select>
-        </div>
+        <h1>Select Your Target Customer</h1>
+        <p class="subtitle">
+            Choose an AI persona that best represents your ideal customer
+        </p>
 
         <div class="persona-grid">
             {#each filteredPersonas as persona (persona.id)}
@@ -418,42 +364,22 @@
                 </div>
             {/each}
         </div>
-
-        <div class="coming-soon">
-            <h2>Coming Soon</h2>
-            <div class="features">
-                <div class="feature">
-                    <h3>Custom Persona Creation</h3>
-                    <p>
-                        Create your own AI customer persona with our guided
-                        step-by-step process.
-                    </p>
-                </div>
-                <div class="feature">
-                    <h3>Edit Existing Personas</h3>
-                    <p>
-                        Customize predefined personas to better fit your target
-                        audience.
-                    </p>
-                </div>
-            </div>
-        </div>
     </div>
 </main>
 
-{#if selectedPersona}
+{#if $selectedPersona}
     <div class="modal-overlay" on:click={closePersonaModal} transition:fade>
         <div class="modal-content" on:click|stopPropagation transition:scale>
             <button class="close-button" on:click={closePersonaModal}
                 >&times;</button
             >
             <div class="modal-header">
-                <span class="modal-emoji">{selectedPersona.emoji}</span>
+                <span class="modal-emoji">{$selectedPersona.emoji}</span>
                 <div>
-                    <h2>{selectedPersona.name}</h2>
-                    <p class="modal-summary">{selectedPersona.summary}</p>
+                    <h2>{$selectedPersona.name}</h2>
+                    <p class="modal-summary">{$selectedPersona.summary}</p>
                     <span class="modal-industry-tag"
-                        >{selectedPersona.industry}</span
+                        >{$selectedPersona.industry}</span
                     >
                 </div>
             </div>
@@ -464,19 +390,19 @@
                     <ul>
                         <li>
                             <strong>Age:</strong>
-                            {selectedPersona.demographics.age}
+                            {$selectedPersona.demographics.age}
                         </li>
                         <li>
                             <strong>Gender:</strong>
-                            {selectedPersona.demographics.gender}
+                            {$selectedPersona.demographics.gender}
                         </li>
                         <li>
                             <strong>Location:</strong>
-                            {selectedPersona.demographics.location}
+                            {$selectedPersona.demographics.location}
                         </li>
                         <li>
                             <strong>Occupation:</strong>
-                            {selectedPersona.demographics.occupation}
+                            {$selectedPersona.demographics.occupation}
                         </li>
                     </ul>
                 </div>
@@ -484,7 +410,7 @@
                 <div class="modal-section">
                     <h3>Traits</h3>
                     <ul class="traits-list">
-                        {#each selectedPersona.traits as trait}
+                        {#each $selectedPersona.traits as trait}
                             <li>{trait}</li>
                         {/each}
                     </ul>
@@ -493,7 +419,7 @@
                 <div class="modal-section">
                     <h3>Goals</h3>
                     <ul class="goals-list">
-                        {#each selectedPersona.goals as goal}
+                        {#each $selectedPersona.goals as goal}
                             <li>{goal}</li>
                         {/each}
                     </ul>
@@ -502,7 +428,7 @@
 
             <button
                 class="select-button"
-                on:click={() => selectPersona(selectedPersona)}
+                on:click={() => selectPersona($selectedPersona)}
             >
                 Select This Persona
             </button>
@@ -514,8 +440,8 @@
 
 <style>
     .ai-persona-selection {
-        background-color: #f8fafc;
-        padding: 3rem 0;
+        background-color: #fff;
+        padding: 4rem 0;
     }
 
     .container {
@@ -524,94 +450,30 @@
         padding: 0 2rem;
     }
 
-    .header {
-        text-align: center;
-        margin-bottom: 2rem;
-    }
-
     h1 {
-        font-family: "Playfair Display", serif;
         font-size: 3rem;
-        color: #2d3748;
+        color: #333;
+        text-align: center;
         margin-bottom: 1rem;
-        line-height: 1.2;
     }
 
-    .highlight {
-        color: #4299e1;
-        position: relative;
-        display: inline-block;
-    }
-
-    .highlight::after {
-        content: "";
-        position: absolute;
-        bottom: -5px;
-        left: 0;
-        width: 100%;
-        height: 3px;
-        background-color: #4299e1;
-        border-radius: 2px;
-    }
-
-    .subheader {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-top: 1rem;
-    }
-
-    .line {
-        flex-grow: 1;
-        height: 1px;
-        background-color: #cbd5e0;
-        max-width: 100px;
-    }
-
-    .description {
-        color: #718096;
-        font-size: 1.1rem;
-        margin: 0 1rem;
-        font-style: italic;
-    }
-
-    .filters {
-        display: flex;
-        justify-content: center;
-        gap: 1rem;
-        margin-bottom: 2rem;
-    }
-
-    select {
-        padding: 0.5rem 1rem;
-        border: 1px solid #e2e8f0;
-        border-radius: 8px;
-        background-color: white;
-        font-family: "Nunito", sans-serif;
-        font-size: 0.9rem;
-        color: #4a5568;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    }
-
-    select:hover,
-    select:focus {
-        border-color: #4299e1;
-        outline: none;
-        box-shadow: 0 4px 6px rgba(66, 153, 225, 0.1);
+    .subtitle {
+        text-align: center;
+        color: #666;
+        font-size: 1.2rem;
+        margin-bottom: 3rem;
     }
 
     .persona-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
     }
 
     .persona-card {
         background-color: white;
-        border-radius: 12px;
-        padding: 1.25rem;
+        border-radius: 8px;
+        padding: 1.5rem;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         cursor: pointer;
         transition: all 0.3s ease;
@@ -619,7 +481,6 @@
         flex-direction: column;
         align-items: center;
         text-align: center;
-        overflow: hidden;
     }
 
     .persona-card:hover {
@@ -628,86 +489,38 @@
     }
 
     .persona-emoji {
-        font-size: 2.5rem;
-        margin-bottom: 0.5rem;
+        font-size: 3rem;
+        margin-bottom: 1rem;
     }
 
     h3 {
-        font-family: "Playfair Display", serif;
-        font-size: 1.1rem;
-        color: #2d3748;
+        font-size: 1.5rem;
+        color: #333;
         margin-bottom: 0.5rem;
     }
 
     .persona-card p {
-        color: #4a5568;
-        font-size: 0.85rem;
+        color: #666;
+        font-size: 1rem;
         line-height: 1.4;
-        margin-bottom: 0.75rem;
-    }
-
-    .industry-tag {
-        display: inline-block;
-        background-color: #edf2f7;
-        color: #4a5568;
-        padding: 0.25rem 0.5rem;
-        border-radius: 9999px;
-        font-size: 0.7rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-    }
-
-    .coming-soon {
-        background-color: #edf2f7;
-        border-radius: 12px;
-        padding: 1.5rem;
-        margin-top: 3rem;
-        text-align: center;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .coming-soon h2 {
-        font-family: "Playfair Display", serif;
-        font-size: 1.5rem;
-        color: #2d3748;
         margin-bottom: 1rem;
     }
 
-    .features {
-        display: flex;
-        justify-content: space-around;
-        flex-wrap: wrap;
-        gap: 1rem;
-    }
-
-    .feature {
-        flex: 1;
-        min-width: 200px;
-        background-color: white;
-        border-radius: 8px;
-        padding: 1rem;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    }
-
-    .feature h3 {
-        font-size: 1rem;
-        color: #4a5568;
-        margin-bottom: 0.5rem;
-    }
-
-    .feature p {
-        color: #718096;
-        font-size: 0.85rem;
-        line-height: 1.4;
+    .industry-tag {
+        background-color: #ff6347;
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 25px;
+        font-size: 0.8rem;
+        font-weight: 600;
     }
 
     .modal-overlay {
         position: fixed;
         top: 0;
         left: 0;
-        width: 100%;
-        height: 100%;
+        right: 0;
+        bottom: 0;
         background-color: rgba(0, 0, 0, 0.5);
         display: flex;
         justify-content: center;
@@ -717,14 +530,12 @@
 
     .modal-content {
         background-color: white;
-        border-radius: 16px;
+        border-radius: 8px;
         padding: 2rem;
         max-width: 600px;
         width: 90%;
         max-height: 90vh;
         overflow-y: auto;
-        position: relative;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     }
 
     .close-button {
@@ -735,50 +546,32 @@
         background: none;
         border: none;
         cursor: pointer;
-        color: #4a5568;
-        transition: color 0.3s ease;
-    }
-
-    .close-button:hover {
-        color: #2d3748;
     }
 
     .modal-header {
         display: flex;
         align-items: center;
         margin-bottom: 1.5rem;
-        padding-bottom: 1.5rem;
-        border-bottom: 1px solid #e2e8f0;
     }
 
     .modal-emoji {
-        font-size: 4rem;
-        margin-right: 1.5rem;
-    }
-
-    .modal-content h2 {
-        font-family: "Playfair Display", serif;
-        font-size: 2rem;
-        color: #2d3748;
-        margin-bottom: 0.5rem;
+        font-size: 3rem;
+        margin-right: 1rem;
     }
 
     .modal-summary {
-        color: #4a5568;
-        font-size: 1rem;
+        color: #666;
         margin-bottom: 0.5rem;
     }
 
     .modal-industry-tag {
         display: inline-block;
-        background-color: #ebf4ff;
-        color: #4299e1;
+        background-color: #ff6347;
+        color: white;
         padding: 0.25rem 0.75rem;
-        border-radius: 9999px;
+        border-radius: 25px;
         font-size: 0.8rem;
         font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
     }
 
     .modal-body {
@@ -793,25 +586,24 @@
         padding: 1rem;
     }
 
-    .modal-content h3 {
-        font-family: "Playfair Display", serif;
+    .modal-section h3 {
         font-size: 1.2rem;
-        color: #2d3748;
+        color: #333;
         margin-bottom: 0.75rem;
-        border-bottom: 2px solid #4299e1;
+        border-bottom: 2px solid #ff6347;
         padding-bottom: 0.25rem;
         display: inline-block;
     }
 
-    .modal-content ul {
+    .modal-section ul {
         list-style-type: none;
         padding-left: 0;
         margin-bottom: 0;
     }
 
-    .modal-content li {
+    .modal-section li {
         font-size: 0.9rem;
-        color: #4a5568;
+        color: #666;
         margin-bottom: 0.5rem;
     }
 
@@ -827,7 +619,7 @@
         background-color: #e2e8f0;
         color: #4a5568;
         padding: 0.25rem 0.75rem;
-        border-radius: 9999px;
+        border-radius: 25px;
         font-size: 0.8rem;
         font-weight: 600;
     }
@@ -836,7 +628,7 @@
         display: block;
         width: 100%;
         padding: 0.75rem;
-        background-color: #4299e1;
+        background-color: #ff6347;
         color: white;
         border: none;
         border-radius: 8px;
@@ -848,21 +640,6 @@
     }
 
     .select-button:hover {
-        background-color: #3182ce;
-    }
-
-    :global(.persona-modal-content) {
-        text-align: left;
-    }
-
-    :global(.persona-modal-content .persona-emoji) {
-        font-size: 3rem;
-        display: block;
-        text-align: center;
-        margin-bottom: 1rem;
-    }
-
-    :global(.persona-modal-content ul) {
-        padding-left: 1.5rem;
+        background-color: #ff4500;
     }
 </style>

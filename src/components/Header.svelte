@@ -1,163 +1,80 @@
+<!-- Header.svelte -->
 <script>
-    import logo from "../asset/logo.svg";
     import { onMount } from "svelte";
-    import { goto } from "$app/navigation";
 
-    let isMenuOpen = false;
-    let isMobile = false;
-
-    function toggleMenu() {
-        isMenuOpen = !isMenuOpen;
-    }
-
-    function checkMobile() {
-        isMobile = window.innerWidth <= 768;
-    }
-
-    function navigateToLogin() {
-        goto("/login");
-    }
-
-    function scrollToFeatures() {
-        const featuresSection = document.querySelector("#future-focused");
-        if (featuresSection) {
-            featuresSection.scrollIntoView({ behavior: "smooth" });
-        }
-    }
+    let isScrolled = false;
 
     onMount(() => {
-        checkMobile();
-        window.addEventListener("resize", checkMobile);
-        return () => window.removeEventListener("resize", checkMobile);
+        const handleScroll = () => {
+            isScrolled = window.scrollY > 0;
+        };
+        window.addEventListener("scroll", handleScroll);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
     });
 </script>
 
-<header>
-    <div class="container">
-        <img src={logo} alt="LemonSoda.ai Logo" class="logo" />
-        {#if isMobile}
-            <button class="menu-toggle" on:click={toggleMenu}>
-                {isMenuOpen ? "✕" : "☰"}
-            </button>
-        {/if}
-        <nav class:open={isMenuOpen} class:mobile={isMobile}>
-            <a href="#" on:click|preventDefault={scrollToFeatures}>Features</a>
-            <a href="#demo">Demo</a>
-            <a href="#contact">Contact</a>
-        </nav>
+<header class:scrolled={isScrolled}>
+    <div class="logo">☁️ Cloudhub</div>
+    <nav>
+        <a href="#" class="dropdown">Product ▼</a>
+        <a href="#">Home</a>
+        <a href="#">Shop</a>
+        <a href="#">Pages</a>
+        <a href="#">Integrations</a>
+        <a href="#">Developers</a>
+    </nav>
+    <div class="auth">
+        <a href="#" class="login">Login</a>
+        <a href="#" class="cta">Start for free</a>
     </div>
 </header>
 
 <style>
     header {
-        background-color: white;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        padding: 1rem 0;
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-    }
-
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0 2rem;
-        flex-wrap: wrap; /* Allow wrapping */
+        padding: 1rem 2rem;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background-color: transparent;
+        transition: background-color 0.3s ease;
+    }
+
+    header.scrolled {
+        background-color: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .logo {
-        height: 2.5rem;
+        font-weight: bold;
+        font-size: 1.5rem;
     }
 
     nav {
         display: flex;
-        gap: 2.5rem;
-        align-items: center;
-        flex-wrap: wrap;
-    }
-
-    nav.mobile {
-        display: none;
-    }
-
-    nav.mobile.open {
-        display: flex;
+        gap: 1.5rem;
     }
 
     a {
-        color: #333;
         text-decoration: none;
-        font-weight: 500;
-        font-size: 1rem;
-        transition: color 0.3s ease;
+        color: #333;
     }
 
-    a:hover {
-        color: #007bff;
+    .auth {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
     }
 
-    .cta-button {
-        background-color: #007bff;
+    .cta {
+        background-color: #ff6347;
         color: white;
-        border: none;
-        padding: 0.75rem 1.5rem;
-        border-radius: 50px;
-        font-weight: 600;
-        font-size: 1rem;
-        cursor: pointer;
-        transition:
-            background-color 0.3s ease,
-            transform 0.2s ease;
-    }
-
-    .cta-button:hover {
-        background-color: #0056b3;
-        transform: translateY(-2px);
-    }
-
-    .menu-toggle {
-        display: none;
-    }
-
-    @media (max-width: 768px) {
-        .container {
-            padding: 0 1rem;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        .menu-toggle {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            display: block;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        nav {
-            flex-direction: column;
-            align-items: flex-start;
-            width: 100%;
-            padding-top: 1rem;
-        }
-
-        nav.mobile {
-            display: none;
-        }
-
-        nav.mobile.open {
-            display: flex;
-        }
-
-        a {
-            width: 100%;
-            padding: 0.5rem 0;
-        }
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
     }
 </style>

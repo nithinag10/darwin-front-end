@@ -1,229 +1,91 @@
 <script>
     import { createEventDispatcher } from "svelte";
-    import InfoIcon from "./InfoIcon.svelte";
-    import Header from "./Header.svelte";
     import Footer from "./Footer.svelte";
+    import { selectedPersona } from "../stores/personaStore.js"; // We'll create this store
+    import ValidationResults from "./ValidationResults.svelte";
 
     const dispatch = createEventDispatcher();
 
-    let productName = "";
-    let productDescription = "";
-    let productCategory = "";
-    let websiteUrl = "";
-    let figmaApiKey = "";
-    let figmaFileName = "";
-    let platform = "";
-    let brandValues = "";
-    let emotionalGoals = [];
-    let additionalInfo = "";
+    let businessIdea = "";
+    let validationResult = null;
+    const maxCharacters = 250;
 
-    const categories = [
-        "Technology",
-        "Retail",
-        "Healthcare",
-        "Finance",
-        "Education",
-        "Other",
-    ];
-    const platformOptions = [
-        "Web-based",
-        "iOS App",
-        "Android App",
-        "Multi-platform",
-    ];
-    const emotionalGoalOptions = [
-        "Trust",
-        "Excitement",
-        "Reliability",
-        "Comfort",
-        "Innovation",
-        "Simplicity",
-    ];
+    $: remainingCharacters = maxCharacters - businessIdea.length;
 
-    function saveProductDetails() {
-        dispatch("save", {
-            productName,
-            productDescription,
-            productCategory,
-            websiteUrl,
-            figmaApiKey,
-            figmaFileName,
-            platform,
-            brandValues,
-            emotionalGoals,
-            additionalInfo,
-        });
-    }
+    async function validateBusinessIdea() {
+        try {
+            const response = await fetch(
+                "https://web-aca-app.ambitiousplant-60435fdc.westus2.azurecontainerapps.io/create-persona-chat",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        persona: $selectedPersona,
+                        businessIdea: businessIdea,
+                    }),
+                },
+            );
 
-    function showInfo(message) {
-        alert(message); // Replace with a more sophisticated tooltip
+            if (!response.ok) {
+                throw new Error("Failed to validate idea");
+            }
+
+            validationResult = await response.json();
+            console.log("Validation result:", validationResult);
+            dispatch("validationComplete", validationResult);
+        } catch (error) {
+            console.error("Error validating business idea:", error);
+            // Handle the error appropriately, e.g., show an error message to the user
+        }
     }
 </script>
 
-<Header />
-
 <main class="product-details">
     <div class="container">
-        <h1>Enter Your <span class="highlight">Product Details</span></h1>
-        <div class="subheader">
-            <div class="line"></div>
-            <p class="description">
-                Enhance AI simulations with accurate product information
-            </p>
-            <div class="line"></div>
-        </div>
+        {#if !validationResult}
+            <h1>Describe Your <span class="highlight">Business Idea</span></h1>
+            <div class="subheader">
+                <div class="line"></div>
+                <p class="description">Tell us about your product or service</p>
+                <div class="line"></div>
+            </div>
 
-        <form on:submit|preventDefault={saveProductDetails}>
-            <div class="card-grid">
+            <form on:submit|preventDefault={validateBusinessIdea}>
                 <div class="card">
-                    <h2>Basic Information</h2>
+                    <h2>Business Idea</h2>
                     <div class="form-field">
-                        <label for="productName">Product Name</label>
-                        <input
-                            id="productName"
-                            type="text"
-                            bind:value={productName}
-                            placeholder="Enter product name"
-                            required
-                        />
-                    </div>
-                    <div class="form-field">
-                        <label for="productDescription"
-                            >Product Description</label
+                        <label for="businessIdea"
+                            >Describe your business idea in detail</label
                         >
                         <textarea
-                            id="productDescription"
-                            bind:value={productDescription}
-                            placeholder="Briefly describe your product"
+                            id="businessIdea"
+                            bind:value={businessIdea}
+                            maxlength={maxCharacters}
+                            placeholder="Enter your business idea, product description, target audience, and any other relevant details..."
                             required
                         ></textarea>
-                    </div>
-                    <div class="form-field">
-                        <label for="productCategory"
-                            >Product Category/Industry</label
-                        >
-                        <select
-                            id="productCategory"
-                            bind:value={productCategory}
-                            required
-                        >
-                            <option value="">Select a category</option>
-                            {#each categories as category}
-                                <option value={category}>{category}</option>
-                            {/each}
-                        </select>
-                    </div>
-                    <div class="form-field">
-                        <label for="websiteUrl">
-                            Website URL
-                            <InfoIcon
-                                message="Enter the URL of your product's website or application."
-                            />
-                        </label>
-                        <input
-                            id="websiteUrl"
-                            type="url"
-                            bind:value={websiteUrl}
-                            placeholder="https://example.com"
-                            required
-                        />
-                    </div>
-                </div>
-
-                <div class="card design-integration">
-                    <h2>Design Integration</h2>
-                    <p class="card-description">
-                        Connect your Figma designs to LemonSoda for better AI
-                        understanding of your product's features and working in
-                        depth.
-                    </p>
-                    <div class="security-note">
-                        <strong>🔒 Your security is our priority:</strong> We use
-                        industry-standard encryption to protect your API key.
-                    </div>
-                    <div class="form-field">
-                        <label for="figmaApiKey">
-                            Figma API Key
-                            <InfoIcon
-                                message="Your Figma API key allows secure, read-only access to your design file."
-                            />
-                        </label>
-                        <input
-                            id="figmaApiKey"
-                            type="password"
-                            bind:value={figmaApiKey}
-                            placeholder="Enter your Figma API key"
-                        />
-                    </div>
-                    <div class="form-field">
-                        <label for="figmaFileName">
-                            Figma File Name
-                            <InfoIcon
-                                message="Enter the name of your Figma file for this product."
-                            />
-                        </label>
-                        <input
-                            id="figmaFileName"
-                            type="text"
-                            bind:value={figmaFileName}
-                            placeholder="Enter your Figma file name"
-                        />
-                    </div>
-                </div>
-
-                <div class="card platform-brand">
-                    <h2>Platform & Brand</h2>
-                    <div class="form-field">
-                        <label for="platform">Platform</label>
-                        <select id="platform" bind:value={platform} required>
-                            <option value="">Select a platform</option>
-                            {#each platformOptions as option}
-                                <option value={option}>{option}</option>
-                            {/each}
-                        </select>
-                    </div>
-                    <div class="form-field">
-                        <label for="brandValues">Brand Values</label>
-                        <textarea
-                            id="brandValues"
-                            bind:value={brandValues}
-                            placeholder="Describe your brand values"
-                        ></textarea>
-                    </div>
-                    <div class="form-field">
-                        <label>Emotional Goals</label>
-                        <div class="checkbox-group">
-                            {#each emotionalGoalOptions as goal}
-                                <label class="checkbox-label">
-                                    <input
-                                        type="checkbox"
-                                        bind:group={emotionalGoals}
-                                        value={goal}
-                                    />
-                                    {goal}
-                                </label>
-                            {/each}
+                        <div class="character-count">
+                            {remainingCharacters}
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="card additional-info">
-                <h2>Additional Information</h2>
-                <div class="form-field">
-                    <label for="additionalInfo">Additional Notes</label>
-                    <textarea
-                        id="additionalInfo"
-                        bind:value={additionalInfo}
-                        placeholder="Any other relevant information"
-                    ></textarea>
+                <div class="card coming-soon">
+                    <h2>Design Integration</h2>
+                    <p class="card-description">
+                        Coming Soon: Connect your Figma designs to LemonSoda for
+                        better AI understanding of your product's features and
+                        working in depth.
+                    </p>
                 </div>
-            </div>
 
-            <button type="submit" class="save-button"
-                >Save Product Details</button
-            >
-        </form>
+                <button type="submit" class="save-button">Validate</button>
+            </form>
+        {:else}
+            <ValidationResults {validationResult} />
+        {/if}
     </div>
 </main>
 
@@ -236,7 +98,7 @@
     }
 
     .container {
-        max-width: 1200px;
+        max-width: 800px;
         margin: 0 auto;
         padding: 0 2rem;
     }
@@ -251,7 +113,7 @@
     }
 
     .highlight {
-        color: #4299e1;
+        color: #ff6347;
         position: relative;
         display: inline-block;
     }
@@ -263,7 +125,7 @@
         left: 0;
         width: 100%;
         height: 3px;
-        background-color: #4299e1;
+        background-color: #ff6347;
         border-radius: 2px;
     }
 
@@ -289,28 +151,12 @@
         font-style: italic;
     }
 
-    .card-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 1.5rem;
-        margin-bottom: 1.5rem;
-    }
-
     .card {
         background-color: white;
         border-radius: 12px;
         padding: 1.5rem;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition:
-            transform 0.3s ease,
-            box-shadow 0.3s ease;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        margin-bottom: 1.5rem;
     }
 
     .card h2 {
@@ -318,34 +164,14 @@
         font-size: 1.5rem;
         color: #2d3748;
         margin-bottom: 1.5rem;
-        border-bottom: 2px solid #4299e1;
+        border-bottom: 2px solid #ff6347;
         padding-bottom: 0.5rem;
-        align-self: flex-start;
-    }
-
-    .card-description {
-        font-size: 0.9rem;
-        color: #718096;
-        margin-bottom: 1rem;
-    }
-
-    .security-note {
-        background-color: #e6fffa;
-        border-left: 4px solid #38b2ac;
-        padding: 1rem;
-        margin-bottom: 1rem;
-        border-radius: 4px;
-        font-size: 0.9rem;
-        color: #2c7a7b;
     }
 
     .form-field {
+        position: relative;
         margin-bottom: 1.5rem;
-        padding-right: 1rem;
-    }
-
-    .form-field:last-child {
-        margin-bottom: 0;
+        margin-right: 1.5rem;
     }
 
     label {
@@ -355,8 +181,6 @@
         margin-bottom: 0.5rem;
     }
 
-    input,
-    select,
     textarea {
         width: 100%;
         padding: 0.75rem;
@@ -365,39 +189,25 @@
         font-family: "Nunito", sans-serif;
         font-size: 1rem;
         color: #4a5568;
-        transition:
-            border-color 0.3s ease,
-            box-shadow 0.3s ease;
+        min-height: 200px;
+        resize: vertical;
+        padding-bottom: 2rem; /* Make room for the character count */
     }
 
-    input:focus,
-    select:focus,
     textarea:focus {
         outline: none;
-        border-color: #4299e1;
-        box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+        border-color: #ff6347;
+        box-shadow: 0 0 0 3px rgba(255, 99, 71, 0.5);
     }
 
-    textarea {
-        min-height: 100px;
-        resize: vertical;
+    .coming-soon {
+        background-color: #e6fffa;
+        border-left: 4px solid #38b2ac;
     }
 
-    .checkbox-group {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 0.75rem;
-    }
-
-    .checkbox-label {
-        display: flex;
-        align-items: center;
-        font-weight: normal;
-    }
-
-    .checkbox-label input {
-        margin-right: 0.5rem;
-        width: auto;
+    .card-description {
+        font-size: 0.9rem;
+        color: #718096;
     }
 
     .save-button {
@@ -406,10 +216,10 @@
         max-width: 300px;
         margin: 2rem auto 0;
         padding: 1rem;
-        background-color: #4299e1;
+        background-color: #ff6347;
         color: white;
         border: none;
-        border-radius: 8px;
+        border-radius: 25px;
         font-size: 1.1rem;
         font-weight: 600;
         cursor: pointer;
@@ -417,25 +227,17 @@
     }
 
     .save-button:hover {
-        background-color: #3182ce;
+        background-color: #ff4500;
     }
 
-    .additional-info {
-        grid-column: 1 / -1;
-    }
-
-    .additional-info-content {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .additional-info .form-field {
-        flex: 1;
-    }
-
-    @media (max-width: 768px) {
-        .card-grid {
-            grid-template-columns: 1fr;
-        }
+    .character-count {
+        position: absolute;
+        bottom: 0.5rem;
+        right: 0.5rem;
+        font-size: 0.8rem;
+        color: #718096;
+        background-color: #f7fafc;
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
     }
 </style>
