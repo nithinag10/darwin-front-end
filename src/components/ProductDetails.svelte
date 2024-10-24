@@ -12,7 +12,28 @@
 
     $: remainingCharacters = maxCharacters - businessIdea.length;
 
+    let isLoading = false;
+    let loadingMessage = "";
+    let loadingStages = [
+        "Creating AI customer persona...",
+        "Analyzing business idea...",
+        "Generating expert insights...",
+        "Refining business concept...",
+        "Preparing comprehensive report...",
+    ];
+
     async function validateBusinessIdea() {
+        isLoading = true;
+        let currentStage = 0;
+
+        const updateLoadingMessage = () => {
+            loadingMessage = loadingStages[currentStage];
+            currentStage = (currentStage + 1) % loadingStages.length;
+        };
+
+        const messageInterval = setInterval(updateLoadingMessage, 3000);
+        updateLoadingMessage(); // Show first message immediately
+
         try {
             const response = await fetch(
                 "https://web-aca-app.ambitiousplant-60435fdc.westus2.azurecontainerapps.io/create-persona-chat",
@@ -38,13 +59,22 @@
         } catch (error) {
             console.error("Error validating business idea:", error);
             // Handle the error appropriately, e.g., show an error message to the user
+        } finally {
+            clearInterval(messageInterval);
+            isLoading = false;
+            loadingMessage = "";
         }
     }
 </script>
 
 <main class="product-details">
     <div class="container">
-        {#if !validationResult}
+        {#if isLoading}
+            <div class="loading-container">
+                <div class="loading-spinner"></div>
+                <p class="loading-message">{loadingMessage}</p>
+            </div>
+        {:else if !validationResult}
             <h1>Describe Your <span class="highlight">Business Idea</span></h1>
             <div class="subheader">
                 <div class="line"></div>
@@ -239,5 +269,37 @@
         background-color: #f7fafc;
         padding: 0.2rem 0.5rem;
         border-radius: 4px;
+    }
+
+    .loading-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 300px;
+    }
+
+    .loading-spinner {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #ff6347;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+    }
+
+    .loading-message {
+        margin-top: 1rem;
+        font-size: 1.1rem;
+        color: #4a5568;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
     }
 </style>

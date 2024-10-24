@@ -16,18 +16,18 @@
 </script>
 
 <header class:scrolled={isScrolled}>
-    <div class="logo">☁️ Cloudhub</div>
+    <div class="logo">LemonSoda</div>
     <nav>
-        <a href="#" class="dropdown">Product ▼</a>
+        <!-- <a href="#" class="dropdown">Product ▼</a>
         <a href="#">Home</a>
         <a href="#">Shop</a>
         <a href="#">Pages</a>
         <a href="#">Integrations</a>
-        <a href="#">Developers</a>
+        <a href="#">Developers</a> -->
     </nav>
     <div class="auth">
-        <a href="#" class="login">Login</a>
-        <a href="#" class="cta">Start for free</a>
+        <!-- <a href="#" class="login">Login</a>
+        <a href="#" class="cta">Start for free</a> -->
     </div>
 </header>
 
