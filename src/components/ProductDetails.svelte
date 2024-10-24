@@ -64,6 +64,8 @@
             isLoading = false;
             loadingMessage = "";
         }
+
+        // Added a line
     }
 </script>
 
